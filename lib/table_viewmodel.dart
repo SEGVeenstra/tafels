@@ -8,10 +8,18 @@ class TableViewModel extends ViewModel<TableState> {
   TableViewModel(int table) : super(initialState: TableLoading(table));
 
   Future<void> loadNewSum() async {
+    int? previousNumber;
+
+    if (state is! TableLoaded) {
+      previousNumber = null;
+    } else {
+      previousNumber = (previousNumber as TableLoaded).sumNumber;
+    }
+
     setState(
       TableLoaded(
         state.table,
-        sumNumber: _random.nextInt(10) + 1,
+        sumNumber: _nextNumber(previousNumber ?? 0),
         answer: 0,
         score: 0,
       ),
@@ -43,7 +51,7 @@ class TableViewModel extends ViewModel<TableState> {
             s.table,
             answer: 0,
             score: s.score + 1,
-            sumNumber: _random.nextInt(10) + 1,
+            sumNumber: _nextNumber(s.sumNumber),
           ),
         );
       } else {
@@ -57,6 +65,14 @@ class TableViewModel extends ViewModel<TableState> {
         );
       }
     }
+  }
+
+  int _nextNumber(int previousNumber) {
+    final newNum = _random.nextInt(10) + 1;
+
+    if (newNum != previousNumber) return newNum;
+
+    return _nextNumber(previousNumber);
   }
 }
 

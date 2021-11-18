@@ -8,67 +8,29 @@ class TableSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Welke tafel wil je oefenen?'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        appBar: AppBar(
+          title: Text('Welke tafel wil je oefenen?'),
+        ),
+        body: GridView.count(
+          padding: const EdgeInsets.all(16),
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          crossAxisCount: MediaQuery.of(context).size.width ~/ 200,
           children: List.generate(
-            5,
-            (index) => Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        context
-                            .vm<TableSelectionViewModel>()
-                            .selectTable(index * 2 + 1);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          '${index * 2 + 1}',
-                          style: const TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+            10,
+            (index) => ElevatedButton(
+              onPressed: () {
+                context.vm<TableSelectionViewModel>().selectTable(index + 1);
+              },
+              child: Text(
+                '${index + 1}',
+                style: const TextStyle(
+                  fontSize: 64,
+                  fontWeight: FontWeight.bold,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        context
-                            .vm<TableSelectionViewModel>()
-                            .selectTable(index * 2 + 2);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          '${index * 2 + 2}',
-                          style: const TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
