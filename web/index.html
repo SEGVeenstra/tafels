@@ -28,6 +28,25 @@
 
   <title>tables</title>
   <link rel="manifest" href="manifest.json">
+
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+  apiKey: "AIzaSyD7dG_BYzwDQyIPcEsNZ2X-F3m_s4X0pVk",
+  authDomain: "de-tafels.firebaseapp.com",
+  projectId: "de-tafels",
+  storageBucket: "de-tafels.appspot.com",
+  messagingSenderId: "836381684389",
+  appId: "1:836381684389:web:64ee67d7925eb61fc4d34c"
+};
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
 </head>
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
