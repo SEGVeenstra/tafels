@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
+            colorScheme: const ColorScheme.light()
+                .copyWith(primary: const Color(0xFF8CC53F))),
         home: ViewModelConsumer<TableSelectionViewModel>(
             builder: (context, vm, _) {
           if (vm.state is EmptySelection) return const TableSelectionPage();

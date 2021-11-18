@@ -9,7 +9,7 @@ class TableSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Welke tafel wil je oefenen?'),
+          title: const Text('Welke tafel wil je oefenen?'),
         ),
         body: GridView.count(
           padding: const EdgeInsets.all(16),

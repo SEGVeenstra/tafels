@@ -95,12 +95,12 @@ class TableContent extends StatelessWidget {
                   ),
                 ),
               ),
-              const Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: Input(),
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 32.0,
+                  vertical: 16,
                 ),
+                child: Input(),
               ),
             ],
           );
@@ -123,120 +123,125 @@ class Input extends StatelessWidget {
       if (state is! TableLoaded) {
         return const SizedBox.shrink();
       }
-      return Row(
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              style: state.answer == 0
-                  ? null
-                  : ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.red),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: state.answer == 0
+                      ? null
+                      : ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.red),
+                        ),
+                  onPressed: state.answer == 0
+                      ? null
+                      : () {
+                          context.vm<TableViewModel>().setAnswer(0);
+                        },
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.delete,
+                      size: 54,
                     ),
-              onPressed: state.answer == 0
-                  ? null
-                  : () {
-                      context.vm<TableViewModel>().setAnswer(0);
-                    },
-              child: const Icon(
-                Icons.delete,
-                size: 54,
+                  ),
+                ),
               ),
-            ),
+              const Expanded(child: SizedBox(width: 16)),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: state.answer > 0 && state is! TableLoadedWrong
+                      ? ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.green),
+                        )
+                      : null,
+                  onPressed: state.answer > 0 && state is! TableLoadedWrong
+                      ? () {
+                          context.vm<TableViewModel>().submitAnswer();
+                        }
+                      : null,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.send,
+                      size: 54,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.max,
-                    children: List.generate(
-                      5,
-                      (index) => Expanded(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: List.generate(
+                  5,
+                  (index) => Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.vm<TableViewModel>().setAnswer(
+                                state is TableLoadedWrong
+                                    ? index + 1
+                                    : _createNewAnswer(
+                                        state.answer,
+                                        index + 1,
+                                      ),
+                              );
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.vm<TableViewModel>().setAnswer(
-                                    state is TableLoadedWrong
-                                        ? index + 1
-                                        : _createNewAnswer(
-                                            state.answer,
-                                            index + 1,
-                                          ),
-                                  );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '${index + 1}',
-                                style: const TextStyle(fontSize: 24),
-                              ),
-                            ),
+                          child: Text(
+                            '${index + 1}',
+                            style: const TextStyle(fontSize: 24),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.max,
-                    children: List.generate(
-                      5,
-                      (index) => Expanded(
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: List.generate(
+                  5,
+                  (index) => Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.vm<TableViewModel>().setAnswer(
+                                state is TableLoadedWrong
+                                    ? (index + 6) % 10
+                                    : _createNewAnswer(
+                                        state.answer,
+                                        (index + 6) % 10,
+                                      ),
+                              );
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.vm<TableViewModel>().setAnswer(
-                                    state is TableLoadedWrong
-                                        ? (index + 6) % 10
-                                        : _createNewAnswer(
-                                            state.answer,
-                                            (index + 6) % 10,
-                                          ),
-                                  );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '${(index + 6) % 10}',
-                                style: const TextStyle(fontSize: 24),
-                              ),
-                            ),
+                          child: Text(
+                            '${(index + 6) % 10}',
+                            style: const TextStyle(fontSize: 24),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              style: state.answer > 0 && state is! TableLoadedWrong
-                  ? ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.green),
-                    )
-                  : null,
-              onPressed: state.answer > 0 && state is! TableLoadedWrong
-                  ? () {
-                      context.vm<TableViewModel>().submitAnswer();
-                    }
-                  : null,
-              child: const Icon(
-                Icons.send,
-                size: 54,
               ),
-            ),
+            ],
           ),
         ],
       );
