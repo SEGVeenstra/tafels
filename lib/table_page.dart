@@ -97,7 +97,7 @@ class TableContent extends StatelessWidget {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 32.0,
+                  horizontal: 16.0,
                   vertical: 16,
                 ),
                 child: Input(),

@@ -15,7 +15,7 @@ class TableSelectionPage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          crossAxisCount: MediaQuery.of(context).size.width ~/ 200,
+          crossAxisCount: MediaQuery.of(context).size.width ~/ 160,
           children: List.generate(
             10,
             (index) => ElevatedButton(
