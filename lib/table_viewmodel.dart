@@ -5,7 +5,13 @@ import 'package:viewmodelscope/viewmodelscope.dart';
 class TableViewModel extends ViewModel<TableState> {
   final _random = Random();
 
-  TableViewModel(int table) : super(initialState: TableLoading(table));
+  TableViewModel(int table, int topLimit, bool includeZero)
+      : super(
+            initialState: TableLoading(
+          table,
+          topLimit,
+          includeZero,
+        ));
 
   Future<void> loadNewSum() async {
     int? previousNumber;
@@ -19,19 +25,27 @@ class TableViewModel extends ViewModel<TableState> {
     setState(
       TableLoaded(
         state.table,
-        sumNumber: _nextNumber(previousNumber ?? 0),
-        answer: 0,
+        state.topLimit,
+        state.includeZero,
+        sumNumber: _nextNumber(
+          previousNumber ?? 0,
+          s.topLimit,
+          s.includeZero,
+        ),
+        answer: null,
         score: 0,
       ),
     );
   }
 
-  Future<void> setAnswer(int answer) async {
+  Future<void> setAnswer(int? answer) async {
     if (state is TableLoaded) {
       final s = state as TableLoaded;
       setState(
         TableLoaded(
           state.table,
+          state.topLimit,
+          state.includeZero,
           sumNumber: s.sumNumber,
           answer: answer,
           score: s.score,
@@ -49,15 +63,23 @@ class TableViewModel extends ViewModel<TableState> {
         setState(
           TableLoaded(
             s.table,
-            answer: 0,
+            state.topLimit,
+            state.includeZero,
+            answer: null,
             score: s.score + 1,
-            sumNumber: _nextNumber(s.sumNumber),
+            sumNumber: _nextNumber(
+              s.sumNumber,
+              s.topLimit,
+              s.includeZero,
+            ),
           ),
         );
       } else {
         setState(
           TableLoadedWrong(
             s.table,
+            state.topLimit,
+            state.includeZero,
             answer: s.answer,
             score: s.score,
             sumNumber: s.sumNumber,
@@ -67,45 +89,71 @@ class TableViewModel extends ViewModel<TableState> {
     }
   }
 
-  int _nextNumber(int previousNumber) {
-    final newNum = _random.nextInt(10) + 1;
+  int _nextNumber(int previousNumber, int topLimit, bool includeZero) {
+    final newNum = _random.nextInt(topLimit + (includeZero ? 1 : 0)) +
+        (includeZero ? 0 : 1);
 
     if (newNum != previousNumber) return newNum;
 
-    return _nextNumber(previousNumber);
+    return _nextNumber(
+      previousNumber,
+      topLimit,
+      includeZero,
+    );
   }
 }
 
 abstract class TableState {
   final int table;
+  final int topLimit;
+  final bool includeZero;
 
-  TableState(this.table);
+  TableState(
+    this.table,
+    this.includeZero,
+    this.topLimit,
+  );
 }
 
 class TableLoading extends TableState {
-  TableLoading(int table) : super(table);
+  TableLoading(int table, int topLimit, bool includeZero)
+      : super(
+          table,
+          includeZero,
+          topLimit,
+        );
 }
 
 class TableLoaded extends TableState {
   final int sumNumber;
-  final int answer;
+  final int? answer;
   final int score;
   TableLoaded(
-    int table, {
+    int table,
+    int topLimit,
+    bool includeZero, {
     required this.sumNumber,
     required this.answer,
     required this.score,
-  }) : super(table);
+  }) : super(
+          table,
+          includeZero,
+          topLimit,
+        );
 }
 
 class TableLoadedWrong extends TableLoaded {
   TableLoadedWrong(
-    int table, {
+    int table,
+    int topLimit,
+    bool includeZero, {
     required int sumNumber,
-    required int answer,
+    required int? answer,
     required int score,
   }) : super(
           table,
+          topLimit,
+          includeZero,
           score: score,
           answer: answer,
           sumNumber: sumNumber,

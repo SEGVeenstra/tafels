@@ -17,7 +17,7 @@ class TableSelectionPage extends StatelessWidget {
           crossAxisSpacing: 16,
           crossAxisCount: MediaQuery.of(context).size.width ~/ 160,
           children: List.generate(
-            10,
+            12,
             (index) => ElevatedButton(
               onPressed: () {
                 context.vm<TableSelectionViewModel>().selectTable(index + 1);
