@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tables/settings/settings_page.dart';
 import 'package:tables/table_selection_viewmodel.dart';
 import 'package:viewmodelscope/viewmodelscope.dart';
 
@@ -10,6 +11,17 @@ class TableSelectionPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Welke tafel wil je oefenen?'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const SettingsPage()));
+              },
+              icon: const Icon(
+                Icons.settings,
+              ),
+            )
+          ],
         ),
         body: GridView.count(
           padding: const EdgeInsets.all(16),
